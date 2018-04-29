@@ -1,0 +1,9 @@
+[Trigger]
+Operation = Install | Upgrade
+Type = Package
+Target = linux
+
+[Actions]
+Description = Updating linux files in efi/arch...
+When = PostTransaction
+Exec = /boot/update.sh initramfs-linux-fallback.img && /boot/update.sh initramfs-linux.img && /boot/update.sh vmlinuz-linux 

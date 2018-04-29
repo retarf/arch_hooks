@@ -2,47 +2,49 @@
 
 EFIARCH=/boot/efi/arch
 UPDATES=/boot/updates
-UILF=update_initramfs_linux_fallback
-UIL=update_initramfs_linux
-UVL=update_vmlinuz_linux 
+HOOKS=/etc/pacman.d/hooks
+UPDATE_FILE=update.sh
+DIRECTORIES=($UPDATES $HOOKS)
 
 
-echo ":: Checking if /boot/efi/arch exist..."
-if [ -d  $EFIARCH ]; then
-    echo ":: Found $EFIARCH"
-else
-    echo ":: $EFIARCH doesn't exist"
-    exit
-fi;
+make_directories () {
 
-if [ ! -d /boot/updates ]; then
-    # mkdir /boot/updates;
-    
-    ### update_initramfs_linux_fallback ###
-    if [ -e update_initramfs_linux_fallback.sh ]; then
-        # cp update_initramfs_linux_fallback.sh /boot/efi/arch/
-        echo ":: File update_initramfs-linux-fallback.sh was copied to /boot/updates"
+    echo ":: Checking if /boot/efi/arch exist..."
+    if [ -d  $EFIARCH ]; then
+        echo ":: Found $EFIARCH"
     else
-        echo ":: File update_initramfs_linux_fallback.sh doesn't exist.";
-        exit;
+        echo ":: $EFIARCH doesn't exist"
+        return 1
     fi;
 
-    ### update_initramfs_linux ###
-    if [ -e update_initramfs_linux.sh ]; then
-        # cp update_initramfs_linux.sh /boot/efi/arch/
-        echo ":: File update_initramfs_linux.sh was copied to /boot/updates"
+    for DIR in ${DIRECTORIES[@]}
+    do
+        echo ":: Checking if $DIR exist..."
+        if [ ! -d $DIR ]; then
+            # mkdir $DIR
+            echo "mkdir $DIR"
+            echo ":: $DIR created"
+        else
+            echo ":: $DIR exist"
+        fi;
+    done
+    return 0
+
+}
+
+copy_update_files () {
+
+    if [ -e $UPDATE_FILE ]; then
+        # cp $UPDATE_FILE /boot
+        echo "cp $UPDATE_FILE /boot"
+        echo ":: File $UPDATE_FILE was copied to /boot"
     else
-        echo ":: File update_initramfs_linux.sh doesn't exist.";
-        exit;
+        echo ":: File $UPDATE_FILE doesn't exist.";
+        return 1
     fi;
 
-    ### update_vmlinuz_linux ###
-    if [ -e update_vmlinuz_linux.sh ]; then
-        # cp update_vmlinuz_linux.sh /boot/efi/arch/
-        echo ":: File update_vmlinuz_linux.sh was copied to /boot/updates"
-    else
-        echo ":: File update_vmlinuz_linux.sh doesn't exist.";
-        exit;
-    fi;
+    return 0
+}
 
-fi;
+make_directories
+copy_update_files

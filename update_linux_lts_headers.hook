@@ -1,9 +1,0 @@
-[Trigger]
-Operation = Install | Upgrade
-Type = Package
-Target = linux-lts-headers
-
-[Actions]
-Description = Updating files in efi/arch...
-When = PostTransaction
-Exec = /boot/update
