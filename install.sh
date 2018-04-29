@@ -21,7 +21,7 @@ make_directories () {
     do
         echo ":: Checking if $DIR exist..."
         if [ ! -d $DIR ]; then
-            # mkdir $DIR
+            mkdir $DIR
             echo "mkdir $DIR"
             echo ":: $DIR created"
         else
@@ -35,7 +35,7 @@ make_directories () {
 copy_update_files () {
 
     if [ -e $UPDATE_FILE ]; then
-        # cp $UPDATE_FILE /boot
+        cp $UPDATE_FILE /boot
         echo "cp $UPDATE_FILE /boot"
         echo ":: File $UPDATE_FILE was copied to /boot"
     else
