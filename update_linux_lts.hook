@@ -1,9 +1,10 @@
 [Trigger]
-Operation = Install | Upgrade
+Operation = Install
+Operation = Upgrade
 Type = Package
 Target = linux-lts
 
-[Actions]
+[Action]
 Description = Updating linux-lts files in efi/arch...
 When = PostTransaction
-Exec = /boot/update.sh initramfs-linux-lts-fallback.img && /boot/update.sh initramfs-linux-lts.img && /boot/update.sh vmlinuz-linux-lts
+Exec = /boot/updates/update_linux_lts.sh
